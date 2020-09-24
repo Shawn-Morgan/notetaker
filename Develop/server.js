@@ -16,12 +16,17 @@ const path = require("path");
 let http = require("http");
 
 // Sets an initial port. We"ll use this later in our listener
-const PORT = process.env.PORT || 8080;
+var PORT = process.env.PORT || 8080;
 
 // Sets up the Express app to handle data parsing
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static("public"));
+
+//per heroku deployment advice
+app.get("/", function(req, res) {
+    res.json(path.join(__dirname, "public/index.html"));
+});
 
 // get notes - routes to notes.html
 app.get("/notes", (request, response) => {
@@ -30,13 +35,7 @@ app.get("/notes", (request, response) => {
     console.log("Your Notes!");
 })
 
-// get notes - routes to root
-app.get("/", (request, response) => {
-    response.sendFile(path.join(__dirname, "public", "index.html"));
-    console.log("Your index!");
-})
-
-// get notes - routes to notes.html
+// get notes 
 app.get("/api/notes", (request, response) => {
 
     fs.readFile(path.join(__dirname, "db", "db.json"), 'utf8', (err, jsonString) => {
@@ -49,8 +48,7 @@ app.get("/api/notes", (request, response) => {
     })
 })
 
-
-// 
+// update notes 
 app.post("/api/notes", function (request, response) {
 
     fs.readFile(path.join(__dirname, "db", "db.json"), 'utf8', (err, jsonString) => {
@@ -70,7 +68,6 @@ app.post("/api/notes", function (request, response) {
 
         notes.push(newNote);
         
-        //problem?
         let NotesJSON = JSON.stringify(notes);
 
         fs.writeFile(path.join(__dirname, "db", "db.json"), NotesJSON, (err) => {
@@ -85,21 +82,8 @@ app.post("/api/notes", function (request, response) {
 
 });
 
-
-// DELETE /api/notes/:id 
-//  Should recieve a query paramter containing the id of a note to delete. This means you'll need to find a way to give each note a unique id when it's saved. In order to delete a note, you'll need to read all notes from the db.json file, remove the note with the given id property, and then rewrite the notes to the db.json file.
-
-// Internal Server Error
+// delete
 app.delete('/api/notes/:id', function (request, response) {
-
-    // console.log(request);
-    // if (err) {
-    //     console.log("Delete failed:", err)
-    // }
-
-
-    // set request to variable 
-    // set request id
 
     fs.readFile(path.join(__dirname, "db", "db.json"), 'utf8', (err, jsonString) => {
         if (err) {
@@ -107,14 +91,11 @@ app.delete('/api/notes/:id', function (request, response) {
             return
         }
         console.log('File data:', jsonString);
-        // json.parse
         var notes = JSON.parse(jsonString);
 
-        // Note object 
         const newNote = {
             title: request.body.title,
             text: request.body.text,
-            // Github code 
             id: Math.random().toString(36).substr(2, 9)
         };
 
