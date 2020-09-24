@@ -62,7 +62,6 @@ app.post("/api/notes", function (request, response) {
         const newNote = {
             title: request.body.title,
             text: request.body.text,
-            // Github code 
             id: Math.random().toString(36).substr(2, 9)
         };
 
