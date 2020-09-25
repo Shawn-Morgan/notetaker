@@ -13,5 +13,13 @@
   },
   "keywords": [],
   "devDependencies": {},
-  "description": ""
+  "description": "* generated readme from readme generator  # Table of Contents",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Shawn-Morgan/notetaker.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Shawn-Morgan/notetaker/issues"
+  },
+  "homepage": "https://github.com/Shawn-Morgan/notetaker#readme"
 }

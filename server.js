@@ -24,8 +24,8 @@ app.use(express.json());
 app.use(express.static("public"));
 
 //per heroku deployment advice
-app.get("/", function(req, res) {
-    res.json(path.join(__dirname, "public/index.html"));
+app.get("/", function(request, response) {
+    response.json(path.join(__dirname, "./Develop/public/index.html"));
 });
 
 // get notes - routes to notes.html
