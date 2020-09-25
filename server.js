@@ -25,7 +25,7 @@ app.use(express.static("public"));
 
 //per heroku deployment advice
 app.get("/", function(request, response) {
-    response.json(path.join(__dirname, "./Develop/public/index.html"));
+    response.json(path.join(__dirname, "./public/index.html"));
 });
 
 // get notes - routes to notes.html
@@ -74,7 +74,9 @@ app.post("/api/notes", function (request, response) {
                 return console.log(err);
             }
             console.log("Success!", NotesJSON);
+            response.json(NotesJSON)
             return NotesJSON;
+
         });
 
     })
@@ -106,6 +108,7 @@ app.delete('/api/notes/:id', function (request, response) {
                 return console.log(err);
             }
             console.log("Success!", NotesJSON);
+            response.json(NotesJSON)
             return NotesJSON;
         });
 
